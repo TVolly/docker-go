@@ -1,20 +1,27 @@
 version: "3"
 services: 
     # app:
-    #     build: 
-    #         context: ../
-    #         dockerfile: ./docker/app/Dockerfile
+    #     image: golang:alpine
+    #     volumes:
+    #         - ..:/go/src/go-with-compose
+    #     working_dir: /go/src/go-with-compose
+    #     command: go run main.go
     #     ports:
     #         - "8080:8080"
+    #     # depends_on:
+    #     #     - db
 
-    postgres:
-        image: "postgres:alpine"
+    db:
+        image: postgres
         environment: 
+            - POSTGRES_DB=postgres
+            - POSTGRES_USER=postgres
             - POSTGRES_PASSWORD=secret
         volumes:
             - ./_data/postgres/data:/var/lib/postgresql/data
 
-    # migrations:
-    #     image: "migrate/migrate:latest"
-    #     volumes:
-    #         - ./migrations:/migrations
+    migrate:
+        image: "migrate/migrate"
+        volumes:
+            - ../migrations:/migrations
+        working_dir: /migrations

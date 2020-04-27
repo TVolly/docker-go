@@ -15,8 +15,9 @@ import (
 
 func TestConfigureCommunityRoutes(t *testing.T) {
 	router := mux.NewRouter()
-	repoRegistry := repositories.NewMemoryRegistry()
-	routes.ConfigureCommunityRoutes(router, repoRegistry)
+	repo := repositories.NewMemoryRegistry().Community()
+
+	routes.NewRouteRegistry(router).ConfigureCommunityRoutes(repo)
 
 	testCases := []struct {
 		method       string

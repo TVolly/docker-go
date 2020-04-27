@@ -3,21 +3,25 @@ package server
 import (
 	"net/http"
 
+	"github.com/TVolly/goapi-addresses/internal/repositories"
+	"github.com/TVolly/goapi-addresses/internal/routes"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 )
 
 type APIServer struct {
-	config *Config
-	logger *logrus.Logger
-	router *mux.Router
+	config       *Config
+	logger       *logrus.Logger
+	router       *mux.Router
+	repoRegistry repositories.RepositoryRegistry
 }
 
 func New(config *Config) *APIServer {
 	return &APIServer{
-		config: config,
-		logger: logrus.New(),
-		router: mux.NewRouter(),
+		config:       config,
+		logger:       logrus.New(),
+		router:       mux.NewRouter(),
+		repoRegistry: repositories.NewMemoryRegistry(),
 	}
 }
 
@@ -45,6 +49,5 @@ func (s *APIServer) configureLogger() error {
 }
 
 func (s *APIServer) configureRouter() {
-
-	s.router.PathPrefix("/private").Subrouter()
+	routes.ConfigureCommunityRoutes(s.router, s.repoRegistry)
 }

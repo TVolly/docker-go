@@ -4,10 +4,12 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type RoutesRegister struct {
+type routesRegistry struct {
 	router *mux.Router
 }
 
-func RegisterRoutes(r *mux.Router) {
-
+func NewRouteRegistry(r *mux.Router) *routesRegistry {
+	return &routesRegistry{
+		router: r,
+	}
 }

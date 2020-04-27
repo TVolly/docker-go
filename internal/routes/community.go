@@ -3,12 +3,11 @@ package routes
 import (
 	"github.com/TVolly/goapi-addresses/internal/controllers"
 	"github.com/TVolly/goapi-addresses/internal/repositories"
-	"github.com/gorilla/mux"
 )
 
-func ConfigureCommunityRoutes(r *mux.Router, repoRegistry repositories.RepositoryRegistry) {
-	s := r.PathPrefix("/communities").Subrouter()
-	c := controllers.NewCommunityController(repoRegistry.Community())
+func (r *routesRegistry) ConfigureCommunityRoutes(repo repositories.CommunityRepository) {
+	s := r.router.PathPrefix("/communities").Subrouter()
+	c := controllers.NewCommunityController(repo)
 
 	s.HandleFunc("", c.Index())
 }

@@ -15,6 +15,7 @@ help:		## Help.
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
 
+
 up:			## Up application
 	@docker-compose up -d
 
@@ -36,6 +37,16 @@ tests:	## Run tests
 		run --rm app \
 		go test -v -vet=off ./... 
 
+run:	## Run app
+	@docker-compose \
+		run --rm app \
+		go run ./cmd/main.go 
+
+build:	## Build app
+	@docker-compose \
+		run --rm app \
+		go build -v ./cmd/main.go
+	
 
 migrate-create:	## Create migration [-n=name]
 	@docker-compose \

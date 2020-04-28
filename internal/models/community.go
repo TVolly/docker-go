@@ -10,3 +10,7 @@ func TestCommunity() *Community {
 		Name: "Some community",
 	}
 }
+
+func (m *Community) Validate() error {
+	return nil
+}

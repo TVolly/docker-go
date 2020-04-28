@@ -15,8 +15,11 @@ func NewCommunityMemoryRepository() *communityMemoryRepository {
 }
 
 func (r *communityMemoryRepository) Create(m *models.Community) error {
-	m.ID = len(r.items) + 1
+	if err := m.Validate(); err != nil {
+		return err
+	}
 
+	m.ID = len(r.items) + 1
 	r.items = append(r.items, m)
 
 	return nil

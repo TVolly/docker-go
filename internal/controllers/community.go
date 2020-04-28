@@ -6,6 +6,7 @@ import (
 	"github.com/TVolly/goapi-addresses/internal/models"
 	"github.com/TVolly/goapi-addresses/internal/repositories"
 	"github.com/TVolly/goapi-addresses/internal/responses"
+	"github.com/TVolly/goapi-addresses/internal/rules"
 )
 
 type communityController struct {
@@ -29,14 +30,21 @@ func (c *communityController) Index() http.HandlerFunc {
 
 func (c *communityController) Create() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		item := models.TestCommunity()
-
-		if err := c.repo.Create(item); err != nil {
-			responses.Error(w, r, http.StatusOK, err)
+		rule := &rules.CommunityCreateRule{}
+		if err := rule.Load(r.Body); err != nil {
+			responses.Error(w, r, http.StatusUnprocessableEntity, err)
 			return
 		}
-		body := responses.SerializeData(item)
 
+		item := &models.Community{}
+		rule.Fill(item)
+
+		if err := c.repo.Create(item); err != nil {
+			responses.Error(w, r, http.StatusInternalServerError, err)
+			return
+		}
+
+		body := responses.SerializeData(item)
 		responses.Respond(w, r, http.StatusCreated, body)
 	}
 }

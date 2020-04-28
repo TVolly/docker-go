@@ -13,6 +13,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// Проверка что роуты действительны
+
 func TestConfigureCommunityRoutes(t *testing.T) {
 	router := mux.NewRouter()
 	repo := repositories.NewMemoryRegistry().Community()
@@ -22,12 +24,18 @@ func TestConfigureCommunityRoutes(t *testing.T) {
 	testCases := []struct {
 		method       string
 		route        string
+		payload      interface{}
 		expectedCode int
 	}{
 		{
 			method:       http.MethodGet,
 			route:        "/communities",
 			expectedCode: http.StatusOK,
+		},
+		{
+			method:       http.MethodPost,
+			route:        "/communities",
+			expectedCode: http.StatusUnprocessableEntity,
 		},
 	}
 

@@ -3,6 +3,8 @@ package server
 import (
 	"net/http"
 
+	"github.com/TVolly/goapi-addresses/internal/middlewares"
+
 	"github.com/TVolly/goapi-addresses/internal/handlers"
 
 	"github.com/TVolly/goapi-addresses/internal/repositories"
@@ -50,6 +52,8 @@ func (s *APIServer) configureLogger() error {
 }
 
 func (s *APIServer) configureRouter() {
+	s.router.Use(middlewares.LogRequests(s.logger))
+
 	h := handlers.NewHandler(s.router, s.store)
 	h.BindCommunityHandlers()
 }

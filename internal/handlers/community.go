@@ -31,7 +31,7 @@ func (h *handlersStore) communityCreate() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		rule := &rules.CommunityCreateRule{}
 		if err := rule.Load(r.Body); err != nil {
-			responses.Error(w, r, http.StatusUnprocessableEntity, err)
+			responses.Error(w, r, http.StatusUnprocessableEntity, responses.ErrInvalidData)
 			return
 		}
 
@@ -52,13 +52,13 @@ func (h *handlersStore) communityShow() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id, err := strconv.Atoi(mux.Vars(r)["id"])
 		if err != nil {
-			responses.Error(w, r, http.StatusNotFound, err)
+			responses.Error(w, r, http.StatusNotFound, responses.ErrPageNorFound)
 			return
 		}
 
 		item, err := h.store.Community().Find(id)
 		if err != nil {
-			responses.Error(w, r, http.StatusNotFound, err)
+			responses.Error(w, r, http.StatusNotFound, responses.ErrPageNorFound)
 			return
 		}
 

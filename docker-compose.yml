@@ -5,7 +5,7 @@ services:
         volumes:
             - .:/go/src/app-${COMPOSE_PROJECT_NAME}
         working_dir: /go/src/app-${COMPOSE_PROJECT_NAME}
-        command: go run main.go
+        command: go run ./cmd/main.go
         ports:
             - "8080:8080"
         # depends_on:

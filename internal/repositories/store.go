@@ -1,6 +1,7 @@
 package repositories
 
 type RepositoryStore interface {
+	Init() error
 	Community() CommunityRepository
 }
 

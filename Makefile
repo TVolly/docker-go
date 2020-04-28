@@ -14,8 +14,6 @@ MIGRATE_DB_URL = $(DB_DRIVER)://$(DB_USERNAME):$(DB_PASSWORD)@$(DB_HOST):$(DB_PO
 help:		## Help.
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
-
-
 up:			## Up application
 	@docker-compose up -d
 

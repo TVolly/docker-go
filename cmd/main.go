@@ -8,8 +8,9 @@ import (
 )
 
 func main() {
+	dbURL := "postgres://postgres:secret@localhost:5432/postgres?sslmode=disable"
 	cfg := server.NewConfig()
-	store := repositories.NewMemoryStore()
+	store := repositories.NewSqlStore(dbURL)
 
 	s := server.New(cfg, store)
 

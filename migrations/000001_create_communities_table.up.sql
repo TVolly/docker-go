@@ -1,4 +1,4 @@
-CREATE TABLE users(
+CREATE TABLE communities(
     id BIGSERIAL PRIMARY KEY,
 
 	name VARCHAR(255)

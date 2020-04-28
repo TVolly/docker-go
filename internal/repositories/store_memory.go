@@ -15,3 +15,7 @@ func (s *memoryStore) Community() CommunityRepository {
 
 	return s.community
 }
+
+func (s *memoryStore) Init() error {
+	return nil
+}

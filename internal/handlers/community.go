@@ -16,6 +16,7 @@ func (h *handlersStore) BindCommunityHandlers() {
 	s.HandleFunc("", h.communityIndex()).Methods(http.MethodGet)
 	s.HandleFunc("", h.communityCreate()).Methods(http.MethodPost)
 	s.HandleFunc("/{id:[0-9]+}", h.communityShow()).Methods(http.MethodGet)
+	s.HandleFunc("/{id:[0-9]+}", h.communityUpdate()).Methods(http.MethodPut)
 }
 
 func (h *handlersStore) communityIndex() http.HandlerFunc {
@@ -59,6 +60,38 @@ func (h *handlersStore) communityShow() http.HandlerFunc {
 		item, err := h.store.Community().Find(id)
 		if err != nil {
 			responses.Error(w, r, http.StatusNotFound, responses.ErrPageNorFound)
+			return
+		}
+
+		body := responses.SerializeData(item)
+		responses.Respond(w, r, http.StatusOK, body)
+	}
+}
+
+func (h *handlersStore) communityUpdate() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		id, err := strconv.Atoi(mux.Vars(r)["id"])
+		if err != nil {
+			responses.Error(w, r, http.StatusNotFound, responses.ErrPageNorFound)
+			return
+		}
+
+		rule := &rules.CommunityUpdateRule{}
+		if err := rule.Load(r.Body); err != nil {
+			responses.Error(w, r, http.StatusUnprocessableEntity, responses.ErrInvalidData)
+			return
+		}
+
+		item, err := h.store.Community().Find(id)
+		if err != nil {
+			responses.Error(w, r, http.StatusNotFound, responses.ErrPageNorFound)
+			return
+		}
+
+		rule.Fill(item)
+
+		if err := h.store.Community().Update(item); err != nil {
+			responses.Error(w, r, http.StatusInternalServerError, err)
 			return
 		}
 

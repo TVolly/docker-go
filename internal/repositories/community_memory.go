@@ -38,3 +38,15 @@ func (r *communityMemoryRepository) Find(id int) (*models.Community, error) {
 
 	return nil, ErrRecordNotFound
 }
+
+func (r *communityMemoryRepository) Update(m *models.Community) error {
+	for i, model := range r.items {
+		if model.ID == m.ID {
+			r.items[i] = m
+
+			return nil
+		}
+	}
+
+	return ErrRecordNotFound
+}

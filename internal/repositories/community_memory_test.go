@@ -44,3 +44,20 @@ func TestCommunityMemoryRepository_Find(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, m3)
 }
+
+func TestCommunityMemoryRepository_Update(t *testing.T) {
+	r := repositories.NewCommunityMemoryRepository()
+
+	m1 := models.TestCommunity()
+	m1.Name = "Some name"
+	r.Create(m1)
+	m1.Name = "Another name"
+	assert.NoError(t, r.Update(m1))
+
+	m2, _ := r.Find(m1.ID)
+	assert.Equal(t, m1.Name, m2.Name)
+
+	m3 := models.TestCommunity()
+	m3.ID = 999
+	assert.Error(t, r.Update(m3))
+}

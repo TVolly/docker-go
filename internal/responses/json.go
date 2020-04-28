@@ -5,10 +5,14 @@ import (
 	"net/http"
 )
 
+const (
+	CONTENT_TYPE_JSON = "application/json"
+)
+
 type jsonFormatter struct{}
 
 func (response *jsonFormatter) respond(w http.ResponseWriter, r *http.Request, code int, data interface{}) {
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", CONTENT_TYPE_JSON)
 	w.WriteHeader(code)
 
 	encoder := json.NewEncoder(w)

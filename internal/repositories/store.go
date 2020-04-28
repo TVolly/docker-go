@@ -1,5 +1,5 @@
 package repositories
 
-type RepositoryRegistry interface {
+type RepositoryStore interface {
 	Community() CommunityRepository
 }

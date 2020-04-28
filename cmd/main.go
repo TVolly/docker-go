@@ -9,9 +9,9 @@ import (
 
 func main() {
 	cfg := server.NewConfig()
-	repoRegistry := repositories.NewMemoryRegistry()
+	store := repositories.NewMemoryStore()
 
-	s := server.New(cfg, repoRegistry)
+	s := server.New(cfg, store)
 
 	if err := s.Start(); err != nil {
 		log.Fatal("Failed on start server")

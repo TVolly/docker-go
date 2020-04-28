@@ -18,7 +18,7 @@ import (
 
 func TestHandlersStore_communityIndex(t *testing.T) {
 	r := mux.NewRouter()
-	h := handlers.NewHandler(r, repositories.NewMemoryStore())
+	h := handlers.NewHandler(r, repositories.TestStore())
 	h.BindCommunityHandlers()
 
 	rec := httptest.NewRecorder()
@@ -31,7 +31,7 @@ func TestHandlersStore_communityIndex(t *testing.T) {
 
 func TestHandlersStore_communityCreate(t *testing.T) {
 	r := mux.NewRouter()
-	h := handlers.NewHandler(r, repositories.NewMemoryStore())
+	h := handlers.NewHandler(r, repositories.TestStore())
 	h.BindCommunityHandlers()
 
 	testCases := []struct {
@@ -75,7 +75,7 @@ func TestHandlersStore_communityCreate(t *testing.T) {
 
 func TestHandlersStore_communityShow(t *testing.T) {
 	r := mux.NewRouter()
-	s := repositories.NewMemoryStore()
+	s := repositories.TestStore()
 	h := handlers.NewHandler(r, s)
 	h.BindCommunityHandlers()
 

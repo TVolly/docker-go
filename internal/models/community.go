@@ -1,8 +1,8 @@
 package models
 
 type Community struct {
-	ID   int
-	Name string
+	ID   int    `json:"id"`
+	Name string `json:"name"`
 }
 
 func TestCommunity() *Community {

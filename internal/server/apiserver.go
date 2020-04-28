@@ -16,12 +16,12 @@ type APIServer struct {
 	repoRegistry repositories.RepositoryRegistry
 }
 
-func New(config *Config) *APIServer {
+func New(config *Config, repoRegistry repositories.RepositoryRegistry) *APIServer {
 	return &APIServer{
 		config:       config,
 		logger:       logrus.New(),
 		router:       mux.NewRouter(),
-		repoRegistry: repositories.NewMemoryRegistry(),
+		repoRegistry: repoRegistry,
 	}
 }
 
@@ -33,7 +33,7 @@ func (s *APIServer) Start() error {
 	s.logger.Info("Configure router")
 	s.configureRouter()
 
-	s.logger.Info("Server ready to start")
+	s.logger.Info("Run server")
 	return http.ListenAndServe(s.config.BindAddr, s.router)
 }
 
@@ -49,5 +49,7 @@ func (s *APIServer) configureLogger() error {
 }
 
 func (s *APIServer) configureRouter() {
-	routes.ConfigureCommunityRoutes(s.router, s.repoRegistry)
+	r := routes.NewRouteRegistry(s.router)
+
+	r.ConfigureCommunityRoutes(s.repoRegistry.Community())
 }

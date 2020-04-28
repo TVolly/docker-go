@@ -6,5 +6,6 @@ import (
 
 type CommunityRepository interface {
 	Create(m *models.Community) error
+	List() []*models.Community
 	Find(id int) (*models.Community, error)
 }

@@ -5,29 +5,33 @@ import (
 )
 
 type communityMemoryRepository struct {
-	items map[int]*models.Community
+	items []*models.Community
 }
 
 func NewCommunityMemoryRepository() *communityMemoryRepository {
 	return &communityMemoryRepository{
-		items: make(map[int]*models.Community),
+		items: []*models.Community{},
 	}
 }
 
 func (r *communityMemoryRepository) Create(m *models.Community) error {
 	m.ID = len(r.items) + 1
 
-	r.items[m.ID] = m
+	r.items = append(r.items, m)
 
 	return nil
 }
 
-func (r *communityMemoryRepository) Find(id int) (*models.Community, error) {
-	m, ok := r.items[id]
+func (r *communityMemoryRepository) List() []*models.Community {
+	return r.items
+}
 
-	if !ok {
-		return nil, ErrRecordNotFound
+func (r *communityMemoryRepository) Find(id int) (*models.Community, error) {
+	for _, model := range r.items {
+		if model.ID == id {
+			return model, nil
+		}
 	}
 
-	return m, nil
+	return nil, ErrRecordNotFound
 }

@@ -19,6 +19,17 @@ func TestCommunityMemoryRepository_Create(t *testing.T) {
 	assert.NotNil(t, m.ID)
 }
 
+func TestCommunityMemoryRepository_List(t *testing.T) {
+	r := repositories.NewCommunityMemoryRepository()
+
+	assert.Empty(t, r.List())
+
+	r.Create(models.TestCommunity())
+	r.Create(models.TestCommunity())
+
+	assert.Len(t, r.List(), 2)
+}
+
 func TestCommunityMemoryRepository_Find(t *testing.T) {
 	r := repositories.NewCommunityMemoryRepository()
 

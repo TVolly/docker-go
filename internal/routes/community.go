@@ -1,6 +1,8 @@
 package routes
 
 import (
+	"net/http"
+
 	"github.com/TVolly/goapi-addresses/internal/controllers"
 	"github.com/TVolly/goapi-addresses/internal/repositories"
 )
@@ -9,5 +11,6 @@ func (r *routesRegistry) ConfigureCommunityRoutes(repo repositories.CommunityRep
 	s := r.router.PathPrefix("/communities").Subrouter()
 	c := controllers.NewCommunityController(repo)
 
-	s.HandleFunc("", c.Index())
+	s.HandleFunc("", c.Index()).Methods(http.MethodGet)
+	s.HandleFunc("", c.Create()).Methods(http.MethodPost)
 }
